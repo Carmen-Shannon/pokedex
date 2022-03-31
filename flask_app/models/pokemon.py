@@ -103,6 +103,26 @@ async def get_stats(user_input, var):
             )
         return stats
 
+ 
+async def get_evolution_chain(user_input):
+    pokemon = await get_pokemon_species(user_input)
+    pokemon = pokemon['evolution_chain']['url']
+    evolution_chain = requests.get(pokemon)
+    evolution_chain = evolution_chain.json()
+    evolution_chain = evolution_chain['chain']
+    evo_list = []
+    toggle = True
+    while toggle:
+        try:
+            sprite = await get_pokemon_info(evolution_chain['species']['name'])
+            sprite = sprite['sprites']['front_default']
+            evo_list.append(sprite)
+            evolution_chain = evolution_chain['evolves_to'][0]
+        except IndexError:
+            toggle = False
+
+    return evo_list
+
 
 class Pokemon:
     def __init__(self, data):
@@ -141,7 +161,7 @@ class Pokemon:
     def check_pc_size(cls, data):
         query = 'SELECT * FROM pokemon WHERE user_id = %(id)s;'
         results = connect('pokedex_db').query_db(query, data)
-        
+
         if len(results) > 8:
             return False
 

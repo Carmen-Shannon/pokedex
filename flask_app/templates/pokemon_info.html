@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="http://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
     <title>Pokemon Page</title>
+    <style>
+        .innercontainer {
+            background-image: none !important;
+            width: 100%;
+            justify-content: space-evenly;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -67,7 +74,12 @@
         <canvas id="stats"></canvas>
     </div>
     <div class="maincontainer">
-        <h2 id="evo_data">WIP PLACEHOLDER EVOLUTION DATA</h2>
+        <h2 id="evo_data">Evolution Chain</h2>
+        <div class="innercontainer">
+            {% for i in range(evolution_chain|length) %}
+                <img src="{{ evolution_chain[i] }}" alt="sprite for pokemon">
+            {% endfor %}
+        </div>
     </div>
     <script>
         let base_stats_doc = document.getElementById('stats').getContext('2d');

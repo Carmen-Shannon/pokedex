@@ -61,7 +61,10 @@ async def pokemon():
             # Get effects from abilities for hover description
             ability_effects = await get_ability_values(pokemon_info['id'])
 
-            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects)
+            # Get evolution chain as list of urls pointing to sprite art
+            evolution_chain = await get_evolution_chain(pokemon_info['id'])
+
+            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain)
 
         except requests.exceptions.JSONDecodeError:
 
@@ -171,4 +174,7 @@ async def pokemon_from_pc(id):
     # Get effects from abilities for hover description
     ability_effects = await get_ability_values(pokemon_info['id'])
 
-    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects)
+    # Get evolution chain
+    evolution_chain = await get_evolution_chain(pokemon_info['id'])
+
+    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain)
