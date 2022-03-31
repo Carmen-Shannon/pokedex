@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="http://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+    <title>Pokedex Test Dashboard</title>
+</head>
+<body>
+    <nav class="navbar">
+        {% if user %}
+            <a href="/logout">Log Out</a>
+            <a href="/about_page">About</a>
+        {% else %}
+            <a href="/login_page">Log In</a>
+            <a href="/register_page">Register</a>
+            <a href="/about_page">About</a>
+        {% endif %}
+    </nav>
+    <div class="maincontainer">
+        <h1>National Pokedex</h1>
+        {% with main_errors = get_flashed_messages(category_filter=['main']) %}
+        {% if main_errors %}
+            {% for message in main_errors %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form action="/search_pokemon" method="post">
+        <input type="text" name="searchbar" class="input_text" placeholder="Search by name or id...">
+        <input type="submit" value="Search" class="submit">
+    </form>
+    </div>
+    <div class="maincontainer">
+        {% if pokemon %}
+            <h2>Your PC</h2>
+            <form action="/clear_pc" method="post">
+                <input type="submit" value="Clear PC" class="submit">
+            </form>
+            <div class="innercontainer">
+                {% for p in range(sprites|length) %}
+                    <a href="/search_pokemon/{{ pokemon[p].national_id }}">
+                        <img src="{{ sprites[p] }}" alt="sprite of {{ pokemon[p].name }}" title="Click to see this pokemon's page">
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

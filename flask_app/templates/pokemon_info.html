@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="http://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+    <title>Pokemon Page</title>
+</head>
+<body>
+    <nav class="navbar">
+        {% if user %}
+            <a href="/home">Home</a>
+            <a href="/logout">Log Out</a>
+            <a href="/about_page">About</a>
+        {% else %}
+            <a href="/home">Home</a>
+            <a href="/login_page">Log In</a>
+            <a href="/register_page">Register</a>
+            <a href="/about_page">About</a>
+        {% endif %}
+    </nav>
+    <div class="maincontainer">
+        <div class="leftcontainer">
+            <h2 id="info">{{ poke_name }}</h2>
+            <h4>The {{ species['genera'][7]['genus'] }}</h4>
+            <nav class="navbar">
+                <a href="#info">Info</a>
+                <a href="#stats">Base Stats</a>
+                <a href="#evo_data">Evolution Data</a>
+                <a href="#moves">Moves</a>
+                <a href="#lcoation">Location</a>
+            </nav>
+            <ul class="info">
+                <li><b>National ID:</b> {{ pokemon['id'] }}</li>
+                <li><b>Type(s):</b> {{ types }}</li>
+                <li><b>Height:</b> {{ poke_height_cm }}cm - {{ poke_height_in }}in | {{ poke_height_m }}m - {{ poke_height_ft }}ft</li>
+                <li>
+                    <b>Abilities: </b>
+                    {% for ability in range(abilities|length) %}
+                        <p title="{{ effects[ability] }}">{{abilities[ability]}}</p>
+                    {% endfor %}
+                </li>
+                <li><b>Base Experience:</b> {{ pokemon['base_experience'] }}</li>
+            </ul>
+            {% if user %}
+                {% if is_in_pc %}
+                    <form action="/remove_from_pc/{{ pokemon['id'] }}" method="post">
+                        <input type="submit" value="Remove from PC" class="submit">
+                    </form>
+                {% else %}
+                    {% if pc_size %}
+                        <form action="/add_to_pc/{{ pokemon['id'] }}" method="post">
+                            <input type="submit" value="Add to PC" class="submit">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="rightcontainer">
+            <img src="{{ pokemon['sprites']['other']['official-artwork']['front_default'] }}" alt="Pokemon {{ pokemon['name'] }}">
+        </div>
+    </div>
+    <div class="maincontainer">
+        <canvas id="stats"></canvas>
+    </div>
+    <div class="maincontainer">
+        <h2 id="evo_data">WIP PLACEHOLDER EVOLUTION DATA</h2>
+    </div>
+    <script>
+        let base_stats_doc = document.getElementById('stats').getContext('2d');
+
+
+        const labels = JSON.parse({{ stats_names | tojson }})
+        const data = JSON.parse({{ base_stats | tojson }})
+        
+        let base_stats_chart = new Chart(base_stats_doc, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Base Stat',
+                    data: data,
+                    hoverBackgroundColor: 'blanchedalmond'
+                }]
+            },
+            options: {}
+        })
+    </script>
+</body>
+</html>

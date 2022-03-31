@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="http://fonts.cdnfonts.com/css/pokemon-solid" rel="stylesheet">
+    <title>Register</title>
+    <style>
+        form {
+            color: #386abb;
+            background-color: #ffdf30;
+            border: 3px solid #386abb;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/home">Home</a>
+    </nav>
+    <div class="maincontainer">
+        <h2>Register a New Account</h2>
+        <a href="/about_page">Why create an account?</a>
+        {% with reg_errors = get_flashed_messages(category_filter=['reg']) %}
+            {% if reg_errors %}
+                {% for message in reg_errors %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form action="/register" method="post">
+            <label for="username">Username:</label>
+            <input type="text" name="username" class="input_text" title="Username must be at least 3 characters and cannot contain special characters">
+            <label for="email">Email:</label>
+            <input type="text" name="email" class="input_text">
+            <label for="password">Password:</label>
+            <input type="password" name="password" class="password" title="Password must be at least 6 characters and contain a number or special character">
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" class="password" title="Passwords must match">
+            <input type="submit" value="Register" class="submit">
+        </form>
+    </div>
+</body>
+</html>
