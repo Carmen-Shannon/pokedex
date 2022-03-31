@@ -78,10 +78,16 @@ async def pokemon():
             # Get evolution chain as list of urls pointing to sprite art
             evolution_chain = await get_evolution_chain(pokemon_info['id'])
 
+            # Get id's from evolutions
+            evo_list = await get_pokemon_in_evo_list(pokemon_info['id'])
+
             # Get move list
             moves = await get_move_list(pokemon_info['id'])
+            # moves_data = await get_move_urls(pokemon_info['id'])
+            # Taking this line out for now because it slows down loading times significantly
+            # need to find a way to process move information without making 50-100 api calls each time
 
-            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves)
+            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves, evo_list=evo_list)
 
         except requests.exceptions.JSONDecodeError:
 
@@ -162,7 +168,7 @@ async def pokemon_from_pc(id):
     # Get all types for pokemon
     types = await get_types(search_result)
 
-    # Converts height to different measurements
+    # Converts height/weight to different measurements
     poke_height_cm = await convert_height_to(search_result, 'cm')
     poke_height_in = await convert_height_to(search_result, 'in')
     poke_height_m = await convert_height_to(search_result, 'm')
@@ -178,16 +184,24 @@ async def pokemon_from_pc(id):
     stats_names = json.dumps(stats_names)
     base_stats = json.dumps(base_stats)
 
-    # Check if pokemon is in pc to add/delete
-    data = {
-        'user_id': session['current_id'],
-        'national_id': pokemon_info['id']
-    }
-    is_in_pc = Pokemon.check_dup(data)
+    # Check if pokemon is in pc otherwise set false
+    try:
+        if session['current_id']:
+            data = {
+                'user_id': session['current_id'],
+                'national_id': pokemon_info['id']
+            }
+            is_in_pc = Pokemon.check_dup(data)
+    except KeyError:
+        is_in_pc = False
 
-    # Check if user has too many pokemon
-    data2 = {'id': session['current_id']}
-    has_too_many = Pokemon.check_pc_size(data2)
+    # Check if user has too many pokemon otherwise set false
+    try:
+        if session['current_id']:
+            data2 = {'id': session['current_id']}
+            has_too_many = Pokemon.check_pc_size(data2)
+    except KeyError:
+        has_too_many = False
 
     # Get effects from abilities for hover description
     ability_effects = await get_ability_values(pokemon_info['id'])
@@ -195,7 +209,13 @@ async def pokemon_from_pc(id):
     # Get evolution chain as list of urls pointing to sprite art
     evolution_chain = await get_evolution_chain(pokemon_info['id'])
 
+    # Get id's from evolutions
+    evo_list = await get_pokemon_in_evo_list(pokemon_info['id'])
+
     # Get move list
     moves = await get_move_list(pokemon_info['id'])
+    # moves_data = await get_move_urls(pokemon_info['id'])
+    # Taking this line out for now because it slows down loading times significantly
+    # need to find a way to process move information without making 50-100 api calls each time
 
-    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves)
+    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves, evo_list=evo_list)

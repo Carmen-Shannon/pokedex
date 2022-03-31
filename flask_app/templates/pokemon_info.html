@@ -38,7 +38,7 @@
                 <a href="#stats">Base Stats</a>
                 <a href="#evo_data">Evolution Data</a>
                 <a href="#moves">Moves</a>
-                <a href="#lcoation">Location</a>
+                <a href="#games">Games</a>
             </nav>
             <ul class="info">
                 <li><b>National ID:</b> {{ pokemon['id'] }}</li>
@@ -76,17 +76,27 @@
     </div>
     <div class="maincontainer">
         <h2 id="evo_data">Evolution Chain</h2>
-        <div class="innercontainer">
+        <div class="innercontainer" id="evolution_chain">
             {% for i in range(evolution_chain|length) %}
-                <img src="{{ evolution_chain[i] }}" alt="sprite for pokemon">
+                <a href="/search_pokemon/{{ evo_list[i] }}">
+                    <img src="{{ evolution_chain[i] }}" alt="sprite for pokemon" title="Click to see this pokemon's page">
+                </a>
             {% endfor %}
         </div>
     </div>
     <div class="maincontainer" id="moves">
         <h2>Moves</h2>
         <ul class="move_list">   
-            {% for move in moves %}
-                <li>{{ move['move']['name'] }}</li>
+            {% for i in range(moves|length) %}
+                <li >{{ moves[i]['move']['name'] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="maincontainer" id="games">
+        <h2>Regions</h2>
+        <ul class="game_list">
+            {% for i in range(games|length) %}
+                <li>{{ games[i]['version']['name'] }}</li>
             {% endfor %}
         </ul>
     </div>

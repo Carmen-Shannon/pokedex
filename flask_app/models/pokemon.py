@@ -30,6 +30,29 @@ async def get_move_list(user_input):
     return move_list
 
 
+async def get_move_urls(user_input):
+    moves = await get_pokemon_info(user_input)
+    moves = moves['moves']
+    url_list = []
+    move_page_list = []
+
+    for move in moves:
+        url_list.append(move['move']['url'])
+
+    for url in url_list:
+        move_data = await get_ability(url)
+        data_dict = {
+            'accuracy': move_data['accuracy'],
+            'power': move_data['power'],
+            'type': move_data['type']['name']
+        }
+        move_page_list.append(data_dict)
+
+    print(move_page_list)
+
+    return move_page_list
+
+
 async def capitalize_name(user_input):
     name = await get_pokemon_info(user_input)
     name = name['name']
@@ -135,6 +158,26 @@ async def get_evolution_chain(user_input):
             sprite = await get_pokemon_info(evolution_chain['species']['name'])
             sprite = sprite['sprites']['front_default']
             evo_list.append(sprite)
+            evolution_chain = evolution_chain['evolves_to'][0]
+        except IndexError:
+            toggle = False
+
+    return evo_list
+
+
+async def get_pokemon_in_evo_list(user_input):
+    pokemon = await get_pokemon_species(user_input)
+    pokemon = pokemon['evolution_chain']['url']
+    evolution_chain = requests.get(pokemon)
+    evolution_chain = evolution_chain.json()
+    evolution_chain = evolution_chain['chain']
+    evo_list = []
+    toggle = True
+    while toggle:
+        try:
+            pokemon_id = await get_pokemon_info(evolution_chain['species']['name'])
+            pokemon_id = pokemon_id['id']
+            evo_list.append(pokemon_id)
             evolution_chain = evolution_chain['evolves_to'][0]
         except IndexError:
             toggle = False
