@@ -163,3 +163,22 @@ ul {
     font-size: 18px;
     top: 45px;
 }
+
+.move_list {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 600px;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.move_list li {
+    font-family: sans-serif !important;
+}
+
+#moves {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}

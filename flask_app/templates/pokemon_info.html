@@ -44,6 +44,7 @@
                 <li><b>National ID:</b> {{ pokemon['id'] }}</li>
                 <li><b>Type(s):</b> {{ types }}</li>
                 <li><b>Height:</b> {{ poke_height_cm }}cm - {{ poke_height_in }}in | {{ poke_height_m }}m - {{ poke_height_ft }}ft</li>
+                <li><b>Weight:</b> {{ weight }}lbs</li>
                 <li>
                     <b>Abilities: </b>
                     {% for ability in range(abilities|length) %}
@@ -80,6 +81,14 @@
                 <img src="{{ evolution_chain[i] }}" alt="sprite for pokemon">
             {% endfor %}
         </div>
+    </div>
+    <div class="maincontainer" id="moves">
+        <h2>Moves</h2>
+        <ul class="move_list">   
+            {% for move in moves %}
+                <li>{{ move['move']['name'] }}</li>
+            {% endfor %}
+        </ul>
     </div>
     <script>
         let base_stats_doc = document.getElementById('stats').getContext('2d');

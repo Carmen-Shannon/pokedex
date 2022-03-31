@@ -37,11 +37,12 @@ async def pokemon():
             # Get all types for pokemon
             types = await get_types(search_result)
 
-            # Converts height to different measurements
+            # Converts height/weight to different measurements
             poke_height_cm = await convert_height_to(search_result, 'cm')
             poke_height_in = await convert_height_to(search_result, 'in')
             poke_height_m = await convert_height_to(search_result, 'm')
             poke_height_ft = await convert_height_to(search_result, 'ft')
+            poke_weight_lb = await convert_weight_to(search_result, 'lb')
 
             # Gets all abilities
             abilities = await get_abilities(search_result)
@@ -77,7 +78,10 @@ async def pokemon():
             # Get evolution chain as list of urls pointing to sprite art
             evolution_chain = await get_evolution_chain(pokemon_info['id'])
 
-            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain)
+            # Get move list
+            moves = await get_move_list(pokemon_info['id'])
+
+            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves)
 
         except requests.exceptions.JSONDecodeError:
 
@@ -163,6 +167,7 @@ async def pokemon_from_pc(id):
     poke_height_in = await convert_height_to(search_result, 'in')
     poke_height_m = await convert_height_to(search_result, 'm')
     poke_height_ft = await convert_height_to(search_result, 'ft')
+    poke_weight_lb = await convert_weight_to(search_result, 'lb')
 
     # Gets all abilities
     abilities = await get_abilities(search_result)
@@ -190,4 +195,7 @@ async def pokemon_from_pc(id):
     # Get evolution chain as list of urls pointing to sprite art
     evolution_chain = await get_evolution_chain(pokemon_info['id'])
 
-    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain)
+    # Get move list
+    moves = await get_move_list(pokemon_info['id'])
+
+    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves)

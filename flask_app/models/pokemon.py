@@ -20,6 +20,16 @@ async def get_ability(id):
     return ability.json()
 
 
+async def get_move_list(user_input):
+    moves = await get_pokemon_info(user_input)
+    moves = moves['moves']
+    move_list = []
+
+    for move in moves:
+        move_list.append(move)
+    return move_list
+
+
 async def capitalize_name(user_input):
     name = await get_pokemon_info(user_input)
     name = name['name']
@@ -53,6 +63,14 @@ async def convert_height_to(user_input, measurement):
         return round((pokemon * 10) * 0.01, 2)
     if measurement == 'ft':
         return round(((pokemon * 10) * 0.3937008) * 0.08333333, 2)
+
+
+async def convert_weight_to(user_input, measurement):
+    pokemon = await get_pokemon_info(user_input)
+    pokemon = pokemon['weight']
+
+    if measurement == 'lb':
+        return round(pokemon * 0.2204624)
 
 
 async def get_abilities(user_input):
@@ -165,7 +183,7 @@ class Pokemon:
         if results == False:
             return True
 
-        if len(results) > 8:
+        if len(results) > 5:
             return False
 
         return True
