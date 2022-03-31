@@ -68,11 +68,12 @@ form label {
 
 .input_text, .password {
     font-size: 18px;
-    width: 80%;
+    width: 90%;
     padding: 6px;
     border-radius: 10px;
     text-align: center;
     height: 20px;
+    border: none;
 }
 
 p {
@@ -86,9 +87,9 @@ p {
     background-color: #ffdf30;
     color: #386abb;
     margin-top: 4%;
-    border: 3px solid #386abb;
     font-size: 16px;
     font-weight: bold;
+    border: none;
 }
 
 .submit:hover, .navbar a:hover {
@@ -99,9 +100,8 @@ p {
 }
 
 @keyframes hoverbutton {
-    to {background-color: black;}
-    to {color: white;}
-    to {border: 3px solid white;}
+    to {background-color: #386abb;}
+    to {color: #ffdf30;}
 }
 
 label {
@@ -127,11 +127,12 @@ label {
     padding-top: 30px;
     background-image: url('https://assets.wallpapersin4k.org/uploads/2017/03/Pokemon-Box-Wallpapers-1.png');
     background-size: 100%;
-    max-width: 40%;
-    min-width: 40%;
+    max-width: 300px;
+    min-width: 300px;
     height: fit-content;
     background-repeat: no-repeat;
     margin-top: 10px;
+    min-height: 250px;
 }
 
 .innercontainer * {
@@ -152,4 +153,13 @@ ul {
     border: 3px solid #386abb;
     border-radius: 15px;
     padding: 20px 20px 20px 5px;
+}
+
+.boxlabel {
+    font-family: sans-serif !important;
+    position: relative;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+    top: 45px;
 }

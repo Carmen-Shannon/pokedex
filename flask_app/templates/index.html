@@ -39,10 +39,11 @@
             <form action="/clear_pc" method="post">
                 <input type="submit" value="Clear PC" class="submit">
             </form>
+            <p class="boxlabel">Box 1</p>
             <div class="innercontainer">
                 {% for p in range(sprites|length) %}
                     <a href="/search_pokemon/{{ pokemon[p].national_id }}">
-                        <img src="{{ sprites[p] }}" alt="sprite of {{ pokemon[p].name }}" title="Click to see this pokemon's page">
+                        <img src="{{ sprites[p] }}" alt="sprite of {{ pokemon[p].name }}" title="{{ pokemon[p].name }} - click to see this pokemon's page">
                     </a>
                 {% endfor %}
             </div>

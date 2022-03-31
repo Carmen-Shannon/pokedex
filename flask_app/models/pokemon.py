@@ -103,7 +103,7 @@ async def get_stats(user_input, var):
             )
         return stats
 
- 
+
 async def get_evolution_chain(user_input):
     pokemon = await get_pokemon_species(user_input)
     pokemon = pokemon['evolution_chain']['url']
@@ -161,6 +161,9 @@ class Pokemon:
     def check_pc_size(cls, data):
         query = 'SELECT * FROM pokemon WHERE user_id = %(id)s;'
         results = connect('pokedex_db').query_db(query, data)
+
+        if results == False:
+            return True
 
         if len(results) > 8:
             return False
