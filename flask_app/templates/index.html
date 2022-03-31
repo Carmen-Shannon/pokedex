@@ -43,7 +43,7 @@
             <div class="innercontainer">
                 {% for p in range(sprites|length) %}
                     <a href="/search_pokemon/{{ pokemon[p].national_id }}">
-                        <img src="{{ sprites[p] }}" alt="sprite of {{ pokemon[p].name }}" title="{{ pokemon[p].name }} - click to see this pokemon's page">
+                        <img src="{{ sprites[p] }}" alt="sprite of {{ pokemon[p].name }}" title="{{ pokemon[p].name }} - click to see this pokemon's page" class="poke_in_pc">
                     </a>
                 {% endfor %}
             </div>

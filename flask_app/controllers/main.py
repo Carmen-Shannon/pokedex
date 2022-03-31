@@ -87,7 +87,13 @@ async def pokemon():
             # Taking this line out for now because it slows down loading times significantly
             # need to find a way to process move information without making 50-100 api calls each time
 
-            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves, evo_list=evo_list)
+            # Get game list
+            games = await get_games(pokemon_info['id'])
+
+            # Get color for graph
+            color = await get_color(pokemon_info['id'])
+
+            return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves, evo_list=evo_list, games=games, color=color)
 
         except requests.exceptions.JSONDecodeError:
 
@@ -218,4 +224,10 @@ async def pokemon_from_pc(id):
     # Taking this line out for now because it slows down loading times significantly
     # need to find a way to process move information without making 50-100 api calls each time
 
-    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves, evo_list=evo_list)
+    # Get game list
+    games = await get_games(pokemon_info['id'])
+
+    # Get color for graph
+    color = await get_color(pokemon_info['id'])
+
+    return render_template('pokemon_info.html', pokemon=pokemon_info, species=species, poke_name=poke_name, types=types, poke_height_cm=poke_height_cm, poke_height_in=poke_height_in, abilities=abilities, user=current_user, stats_names=stats_names, base_stats=base_stats, poke_height_m=poke_height_m, poke_height_ft=poke_height_ft, is_in_pc=is_in_pc, pc_size=has_too_many, effects=ability_effects, evolution_chain=evolution_chain, weight=poke_weight_lb, moves=moves, evo_list=evo_list, games=games, color=color)

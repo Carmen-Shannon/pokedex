@@ -79,7 +79,7 @@
         <div class="innercontainer" id="evolution_chain">
             {% for i in range(evolution_chain|length) %}
                 <a href="/search_pokemon/{{ evo_list[i] }}">
-                    <img src="{{ evolution_chain[i] }}" alt="sprite for pokemon" title="Click to see this pokemon's page">
+                    <img src="{{ evolution_chain[i] }}" alt="sprite for pokemon" title="Click to see this pokemon's page" class="poke_in_pc">
                 </a>
             {% endfor %}
         </div>
@@ -93,10 +93,10 @@
         </ul>
     </div>
     <div class="maincontainer" id="games">
-        <h2>Regions</h2>
+        <h2>Games</h2>
         <ul class="game_list">
-            {% for i in range(games|length) %}
-                <li>{{ games[i]['version']['name'] }}</li>
+            {% for game in games %}
+                <li>{{ game }}</li>
             {% endfor %}
         </ul>
     </div>
@@ -115,7 +115,7 @@
                     label: 'Base Stat',
                     data: data,
                     hoverBackgroundColor: 'blanchedalmond',
-                    backgroundColor: 'brown'
+                    backgroundColor: '{{ color }}'
                 }]
             },
             options: {

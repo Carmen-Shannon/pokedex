@@ -30,6 +30,22 @@ async def get_move_list(user_input):
     return move_list
 
 
+async def get_color(user_input):
+    species = await get_pokemon_species(user_input)
+    species = species['color']['name']
+    print(species)
+    return species
+
+
+async def get_games(user_input):
+    games = await get_pokemon_info(user_input)
+    games = games['game_indices']
+    game_list = []
+    for game in games:
+        game_list.append(game['version']['name'])
+    return game_list
+
+
 async def get_move_urls(user_input):
     moves = await get_pokemon_info(user_input)
     moves = moves['moves']
