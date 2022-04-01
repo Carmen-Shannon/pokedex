@@ -137,7 +137,7 @@ async def get_ability_values(user_input):
 
     for x in range(len(ability_urls)):
         effect = await get_ability(ability_urls[x])
-        effect = effect['effect_entries'][1]['effect']
+        effect = effect['effect_entries'][0]['effect']
         ability_effects.append(effect)
 
     return ability_effects
